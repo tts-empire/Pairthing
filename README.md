@@ -1,6 +1,6 @@
 # Pairthing
 
-Pairthing è un controller desktop FOSS per sincronizzare cartelle fra Mac e Linux con Syncthing. Il primo incremento contiene un’interfaccia Tauri bilingue, una demo locale e un adapter Rust in sola lettura per un motore di laboratorio. Il pairing descritto sotto è in programma.
+Pairthing è un controller desktop FOSS per sincronizzare cartelle fra Mac e Linux con Syncthing. Il primo incremento contiene un’interfaccia Tauri bilingue, una demo locale e un adapter Rust in sola lettura per un motore di laboratorio. Il pairing è disponibile come prova da terminale. La sua integrazione nel desktop è pianificata.
 
 ## Primo collegamento
 
@@ -28,3 +28,7 @@ Il mailbox pubblico facilita il primo incontro. La libreria Wormhole autentica i
 Servono Node, Rust e i prerequisiti Tauri della piattaforma. Dalla radice eseguire `npm ci`. Con `npm run dev` si apre il frontend demo all’indirizzo indicato da Vite. Per il desktop eseguire `npm run tauri dev`. Per la suite con un motore locale eseguire `npm test`; su Linux impostare `PAIRTHING_ENGINE` se il binario Syncthing non è nel PATH. Per collegare il desktop al laboratorio temporaneo usare `python3 scripts/lab.py npm run tauri dev`. [Prerequisiti Tauri](https://v2.tauri.app/start/prerequisites/)
 
 L’[handoff di sviluppo](PAIRTHING_CODEX_HANDOFF.md) contiene architettura, vincoli di sicurezza e criteri di collaudo.
+
+## Primo incremento di pairing
+
+È disponibile una [prova funzionante da terminale](scripts/pairing/README.md) con codice Magic Wormhole, conferma del proprietario, provisioning di una cartella e ripresa dopo il riavvio. La dashboard Tauri rimane in sola lettura. Il collaudo fisico Mac/Linux via hotspot è ancora da eseguire.
