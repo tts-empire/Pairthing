@@ -12,8 +12,11 @@
 
 Una prima prova affidata alla sola discovery globale ha superato il tempo limite. Il prototipo scambia anche l’indirizzo del relay già raggiunto dal motore sul canale autenticato e conserva il listener per la ripresa. Nella prova con il filesystem condiviso della VM, le notifiche di scrittura sono risultate insufficienti: per la cartella di prova è prevista una scansione ogni 20 secondi.
 
+## Prova su due computer fisici
+
+Mac mini e portatile Linux hanno completato il pairing con codice e conferma. Il file scritto sul Mac è arrivato sul portatile; la copia creata su Linux è tornata sul Mac con SHA-256 identico. Dopo il riavvio del processo Mac con il comando sync, Syncthing ha ristabilito una connessione TCP diretta classificata come esterna alla LAN.
+
 ## Prove aperte
 
-- Portatile Linux fisico su hotspot con Mac mini sulla rete di casa. Il container usa la connessione del Mac.
 - Linux Mint x86_64, sospensione e cambio di rete durante un trasferimento.
 - Ripristino automatico dopo un’interruzione durante il provisioning, revoca di dispositivi e integrazione nelle schermate desktop. Il prototipo blocca il riavvio di un profilo con provisioning incompleto.

@@ -31,4 +31,4 @@ L’[handoff di sviluppo](PAIRTHING_CODEX_HANDOFF.md) contiene architettura, vin
 
 ## Primo incremento di pairing
 
-È disponibile una [prova funzionante da terminale](scripts/pairing/README.md) con codice Magic Wormhole, conferma del proprietario, provisioning di una cartella e ripresa dopo il riavvio. La dashboard Tauri rimane in sola lettura. Il collaudo fisico Mac/Linux via hotspot è ancora da eseguire.
+È disponibile una [prova funzionante da terminale](scripts/pairing/README.md) con codice Magic Wormhole, conferma del proprietario, provisioning di una cartella e ripresa dopo il riavvio. La dashboard Tauri rimane in sola lettura. Il primo trasferimento bidirezionale su due computer fisici è documentato nei [risultati del collaudo](docs/TEST_RESULTS.md).
