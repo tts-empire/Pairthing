@@ -4,6 +4,16 @@ Questo incremento collega due motori Syncthing dedicati e condivide una sola car
 
 ## Preparazione su entrambi i computer
 
+Sul portatile Linux x86_64 o ARM64 con glibc, dalla radice del repository eseguire:
+
+```sh
+./scripts/pairing/linux.sh
+```
+
+Il comando usa curl o wget, tar e sha256sum di sistema. Scarica uv e Syncthing verificandone gli SHA256, prepara Python 3.12 e crea il profilo di prova. Quando compare **Linux pronto**, attendere il codice dal Mac mini. Sul portatile usare `./scripts/pairing/linux.sh join` per inserirlo. Dopo la prima associazione usare `./scripts/pairing/linux.sh sync`.
+
+### Preparazione manuale alternativa
+
 Occorrono Python 3.12, Syncthing 2.x e il repository Pairthing. Sul Mac viene riconosciuto anche il binario dentro Syncthing.app. Su Linux mettere `syncthing` nel PATH o indicarne il percorso tramite `PAIRTHING_ENGINE`. Dalla radice del repository:
 
 ```sh
