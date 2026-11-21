@@ -1,0 +1,6 @@
+{
+ "productName":"Pairthing","version":"0.1.0","identifier":"org.pairthing.desktop",
+ "build":{"beforeDevCommand":"npm run dev -- --host 127.0.0.1 --port 1420 --strictPort","devUrl":"http://127.0.0.1:1420","beforeBuildCommand":"npm run build","frontendDist":"../dist"},
+ "app":{"windows":[{"title":"Pairthing","width":940,"height":650}],"security":{"csp":"default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline'"}},
+ "bundle":{"active":false}
+}
