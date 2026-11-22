@@ -16,6 +16,8 @@ Una prima prova affidata alla sola discovery globale ha superato il tempo limite
 
 Mac mini e portatile Linux hanno completato il pairing con codice e conferma. Il file scritto sul Mac è arrivato sul portatile; la copia creata su Linux è tornata sul Mac con SHA-256 identico. Dopo il riavvio del processo Mac con il comando sync, Syncthing ha ristabilito una connessione TCP diretta classificata come esterna alla LAN.
 
+Il 22 novembre 2026 il Mac ha ricevuto dal portatile la copia di ritorno dopo la ripresa senza un nuovo invito. Il confronto byte per byte e SHA-256 coincide con il file inviato dopo il riavvio. Al controllo il peer era collegato via TCP e la cartella conteneva quattro file, con zero file mancanti e zero errori di ricezione.
+
 ## Prove aperte
 
 - Linux Mint x86_64, sospensione e cambio di rete durante un trasferimento.
