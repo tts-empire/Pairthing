@@ -3,57 +3,35 @@ on: workflow_dispatch
 permissions:
   contents: read
 jobs:
-  build:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
+  flatpak:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install desktop build dependencies
+      - name: Prepare tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y flatpak xvfb xdotool dbus-x11
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          npm ci && npm run build
           python -m pip install -r scripts/pairing/requirements.txt pyinstaller==6.22.3
-          npm ci
-      - name: Build portable development app
+      - name: Build inside GNOME SDK
+        run: bash packaging/flatpak/build.sh
+      - name: Install bundle and exercise window
         run: |
-          npm run tauri build -- --no-bundle
-          mkdir -p out/Pairthing/runtime
-          cp src-tauri/target/release/pairthing out/Pairthing/Pairthing
-          pyinstaller --noconfirm --onedir --name pairthing-controller --distpath out/Pairthing/runtime scripts/pairing/desktop.py
-          archive=syncthing-linux-amd64-v2.1.7
-          curl -fLsS --retry 2 "https://github.com/syncthing/syncthing/releases/download/v2.1.7/$archive.tar.gz" -o /tmp/engine.tar.gz
-          echo '2edc416e7ed136b7c858ed5f3f02a3b8316589605e54c380228ceea7acbf0142  /tmp/engine.tar.gz' | sha256sum -c -
-          tar xzf /tmp/engine.tar.gz -C /tmp
-          cp "/tmp/$archive/syncthing" out/Pairthing/runtime/
-          mkdir -p out/Pairthing/licenses/syncthing
-          cp /tmp/"$archive"/*.txt out/Pairthing/licenses/syncthing/
-          cp LICENSE out/Pairthing/licenses/Pairthing.txt
-      - name: Verify packaged worker and native window
-        run: |
-          export AUTOBAHN_USE_NVX=0
-          export PAIRTHING_ENGINE="$PWD/out/Pairthing/runtime/syncthing"
-          export PAIRTHING_TEST_CONTROLLER="$PWD/out/Pairthing/runtime/pairthing-controller/pairthing-controller"
-          python -m unittest discover -s scripts/pairing -p 'test_*.py'
-          # Exercise the native IPC path without depending on a public mailbox in CI.
-          xvfb-run -a sh -ec '
-            out/Pairthing/Pairthing & app=$!
-            trap "kill $app 2>/dev/null || true" EXIT
-            for i in $(seq 1 60); do
-              pgrep -P "$app" -f "/runtime/pairthing-controller/pairthing-controller" && exit 0
-              sleep 1
-            done
-            exit 1
-          '
-          python -c 'import os,subprocess,tempfile; p=subprocess.run([os.environ["PAIRTHING_TEST_CONTROLLER"],tempfile.mkdtemp()],input=b"",capture_output=True,timeout=15,check=True); assert b"ready" in p.stdout'
-          tar -czf Pairthing-linux-x86_64.tar.gz -C out Pairthing
+          flatpak install --user -y ./Pairthing-$(uname -m).flatpak
+          dbus-run-session -- xvfb-run -a bash packaging/flatpak/check-window.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: Pairthing-linux-x86_64
-          path: Pairthing-linux-x86_64.tar.gz
+          name: Pairthing-${{ matrix.runner }}
+          path: '*.flatpak'

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Pairthing
+Comment=Sync a folder between your computers
+Exec=pairthing
+Icon=org.pairthing.desktop
+Categories=Network;FileTransfer;
+Terminal=false
