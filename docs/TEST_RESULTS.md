@@ -18,7 +18,13 @@ Mac mini e portatile Linux hanno completato il pairing con codice e conferma. Il
 
 Il 22 novembre 2026 il Mac ha ricevuto dal portatile la copia di ritorno dopo la ripresa senza un nuovo invito. Il confronto byte per byte e SHA-256 coincide con il file inviato dopo il riavvio. Al controllo il peer era collegato via TCP e la cartella conteneva quattro file, con zero file mancanti e zero errori di ricezione.
 
+## Finestra desktop · 22 novembre 2026
+
+La build Mac arm64 installata è partita con controller e motore inclusi. Nella finestra nativa sono stati azionati **Aggiungi computer** e **Annulla**, verificando il ritorno al modulo di ingresso. Il test `scripts/pairing/desktop_smoke.py` ha esercitato due controller del bundle con profili isolati: generazione e annullamento, nuovo invito, inserimento, conferma, trasferimenti reali in entrambe le direzioni e riapertura di entrambi i processi senza invito. Ripetuto anche con il controller da sorgenti. Verifica della firma locale del bundle superata.
+
+Su Linux ARM64 in container la stessa prova ha verificato trasferimenti bidirezionali e riapertura con due controller avviati dai sorgenti. La build Linux x86_64 su Ubuntu 24.04 ha verificato l’avvio della finestra nativa sotto Xvfb, la creazione del controller incluso tramite IPC e il suo stato iniziale. L’archivio interno `Pairthing-linux-x86_64.tar.gz` scaricato da GitHub ha SHA-256 `d75caa82413f12a96231c3c2f5daa420bc1756ee14252ed39b804b798908fc06`. Resta da provare questa finestra sul Dell fisico. [Esecuzione CI](https://github.com/tts-empire/Pairthing/actions/runs/45014346267)
+
 ## Prove aperte
 
 - Linux Mint x86_64, sospensione e cambio di rete durante un trasferimento.
-- Ripristino automatico dopo un’interruzione durante il provisioning, revoca di dispositivi e integrazione nelle schermate desktop. Il prototipo blocca il riavvio di un profilo con provisioning incompleto.
+- Ripristino automatico dopo un’interruzione durante il provisioning, revoca di dispositivi e selezione di più cartelle dalla GUI. Il prototipo blocca il riavvio di un profilo con provisioning incompleto.
