@@ -113,10 +113,10 @@ class Engine:
         if relay not in listeners:
             self.request("config/options", {"listenAddresses": [*listeners, relay]}, method="PATCH")
 
-    def provision(self, peer, addresses):
+    def provision(self, peer, addresses, name=""):
         self.fresh()
         device = self.request("config/defaults/device")
-        device.update(deviceID=peer, addresses=addresses, autoAcceptFolders=False)
+        device.update(deviceID=peer, name=name, addresses=addresses, autoAcceptFolders=False)
         folder = self.request("config/defaults/folder")
         folder.update(id="pairthing-trial", label="Pairthing", path=str(self.files),
                       rescanIntervalS=20,

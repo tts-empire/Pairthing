@@ -1,3 +1,4 @@
+mod desktop;
 use serde::{Deserialize, Serialize};
 use std::{env, net::SocketAddr, time::Duration};
 
@@ -48,7 +49,7 @@ async fn inspect_engine() -> Result<Option<Snapshot>,String> {
     client.snapshot().await.map(Some)
 }
 fn main() {
-    tauri::Builder::default().invoke_handler(tauri::generate_handler![inspect_engine])
+    tauri::Builder::default().manage(desktop::Desktop::default()).invoke_handler(tauri::generate_handler![inspect_engine, desktop::desktop_state, desktop::desktop_action])
         .run(tauri::generate_context!()).expect("Pairthing desktop");
 }
 #[cfg(test)]

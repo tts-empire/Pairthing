@@ -73,8 +73,9 @@ async def pair(reactor, engine, owner, code, mailbox, announce, approve):
                 raise ValueError("Indirizzo remoto non consentito")
         elif not re.fullmatch(r"tcp://127\.0\.0\.1:[0-9]{1,5}", endpoint):
             raise ValueError("Indirizzo del laboratorio non valido")
+        name = "".join(c for c in str(peer["name"])[:64] if c.isprintable())
         if owner:
-            if not await approve(ascii(str(peer["name"])[:64])):
+            if not await approve(name):
                 channel.send_message(b"denied")
                 raise ValueError("Associazione annullata")
             channel.send_message(b"approved")
@@ -88,7 +89,7 @@ async def pair(reactor, engine, owner, code, mailbox, announce, approve):
             marker.write(peer["id"])
         if message["relay"]:
             engine.remember_relay(message["relay"])
-        engine.provision(peer["id"], addresses)
+        engine.provision(peer["id"], addresses, name)
         channel.send_message(b"configured")
         if await channel.get_message() != b"configured":
             raise ValueError("Peer non configurato")
@@ -106,7 +107,7 @@ async def run(reactor, args):
             owner = args.action == "invite"
             code = None if owner else getpass.getpass("Codice Pairthing: ")
             def approve(name):
-                print(f"Dispositivo {name} richiede la cartella di prova.", flush=True)
+                print(f"Dispositivo {name!r} richiede la cartella di prova.", flush=True)
                 # Read via reactor to keep the invitation timeout active.
                 from twisted.internet import stdio
                 from twisted.protocols.basic import LineOnlyReceiver
